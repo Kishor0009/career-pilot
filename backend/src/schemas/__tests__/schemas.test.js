@@ -131,6 +131,11 @@ describe('resume.schema — updateResumeVersionSchema', () => {
     });
     assert.ok(result.success);
   });
+
+  test('rejects empty payload', () => {
+    const result = updateResumeVersionSchema.safeParse({});
+    assert.ok(!result.success);
+  });
 });
 
 describe('resume.schema — createAtsHistorySchema', () => {
@@ -149,6 +154,26 @@ describe('resume.schema — createAtsHistorySchema', () => {
   test('rejects missing jobRole', () => {
     const result = createAtsHistorySchema.safeParse({
       atsScore: 90
+    });
+    assert.ok(!result.success);
+  });
+
+  test('rejects out of bounds breakdown scores', () => {
+    const result = createAtsHistorySchema.safeParse({
+      jobRole: 'SWE',
+      atsScore: 90,
+      scoreBreakdown: {
+        keywordMatch: 150,
+      }
+    });
+    assert.ok(!result.success);
+  });
+
+  test('rejects negative improvements count', () => {
+    const result = createAtsHistorySchema.safeParse({
+      jobRole: 'SWE',
+      atsScore: 90,
+      improvementsCount: -1
     });
     assert.ok(!result.success);
   });

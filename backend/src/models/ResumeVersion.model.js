@@ -48,7 +48,7 @@ const resumeVersionSchema = new mongoose.Schema({
     timestamps: true
 });
 
-resumeVersionSchema.index({ resumeId: 1, versionNumber: -1 }, { background: true });
+resumeVersionSchema.index({ resumeId: 1, versionNumber: 1 }, { unique: true, background: true });
 resumeVersionSchema.index({ userId: 1, createdAt: -1 }, { background: true });
 
 const ResumeVersion = mongoose.model('ResumeVersion', resumeVersionSchema);

@@ -125,18 +125,23 @@ router.post('/', verifyToken, validate(createResumeSchema), asyncHandler(async (
     title: title || `Resume - ${new Date().toLocaleDateString()}`
   });
 
-  await ResumeVersion.create({
-    resumeId: newResume._id,
-    userId,
-    versionNumber: 1,
-    title: 'v1 - Initial Draft',
-    originalText: newResume.originalText,
-    enhancedText: newResume.enhancedText,
-    jobRole: newResume.jobRole,
-    atsScore: newResume.atsScore || null,
-    tags: ['initial-draft'],
-    metadata: { source: 'editor' }
-  });
+  try {
+    await ResumeVersion.create({
+      resumeId: newResume._id,
+      userId,
+      versionNumber: 1,
+      title: 'v1 - Initial Draft',
+      originalText: newResume.originalText,
+      enhancedText: newResume.enhancedText,
+      jobRole: newResume.jobRole,
+      atsScore: newResume.atsScore !== undefined && newResume.atsScore !== null ? newResume.atsScore : null,
+      tags: ['initial-draft'],
+      metadata: { source: 'editor' }
+    });
+  } catch (err) {
+    await Resume.findByIdAndDelete(newResume._id);
+    throw err;
+  }
 
   res.status(201).json({
     success: true,
@@ -293,18 +298,23 @@ router.post('/import/linkedin', verifyToken, asyncHandler(async (req, res) => {
     title,
   });
 
-  await ResumeVersion.create({
-    resumeId: resume._id,
-    userId,
-    versionNumber: 1,
-    title: 'v1 - LinkedIn Import',
-    originalText: resume.originalText,
-    enhancedText: null,
-    jobRole: resume.jobRole,
-    atsScore: null,
-    tags: ['linkedin-import'],
-    metadata: { source: 'linkedin' }
-  });
+  try {
+    await ResumeVersion.create({
+      resumeId: resume._id,
+      userId,
+      versionNumber: 1,
+      title: 'v1 - LinkedIn Import',
+      originalText: resume.originalText,
+      enhancedText: null,
+      jobRole: resume.jobRole,
+      atsScore: null,
+      tags: ['linkedin-import'],
+      metadata: { source: 'linkedin' }
+    });
+  } catch (err) {
+    await Resume.findByIdAndDelete(resume._id);
+    throw err;
+  }
 
   res.status(201).json({
     success: true,
@@ -402,18 +412,23 @@ router.post('/import/github', verifyToken, asyncHandler(async (req, res) => {
     title,
   });
 
-  await ResumeVersion.create({
-    resumeId: resume._id,
-    userId,
-    versionNumber: 1,
-    title: 'v1 - GitHub Import',
-    originalText: resume.originalText,
-    enhancedText: null,
-    jobRole: resume.jobRole,
-    atsScore: null,
-    tags: ['github-import'],
-    metadata: { source: 'github' }
-  });
+  try {
+    await ResumeVersion.create({
+      resumeId: resume._id,
+      userId,
+      versionNumber: 1,
+      title: 'v1 - GitHub Import',
+      originalText: resume.originalText,
+      enhancedText: null,
+      jobRole: resume.jobRole,
+      atsScore: null,
+      tags: ['github-import'],
+      metadata: { source: 'github' }
+    });
+  } catch (err) {
+    await Resume.findByIdAndDelete(resume._id);
+    throw err;
+  }
 
   res.status(201).json({
     success: true,
@@ -473,18 +488,23 @@ ${text}`;
       title: `Resume from Text — ${new Date().toLocaleDateString()}`
     });
 
-    await ResumeVersion.create({
-      resumeId: resume._id,
-      userId,
-      versionNumber: 1,
-      title: 'v1 - Structured from Text',
-      originalText: resume.originalText,
-      enhancedText: null,
-      jobRole: resume.jobRole,
-      atsScore: null,
-      tags: ['text-import'],
-      metadata: { source: 'text-to-resume' }
-    });
+    try {
+      await ResumeVersion.create({
+        resumeId: resume._id,
+        userId,
+        versionNumber: 1,
+        title: 'v1 - Structured from Text',
+        originalText: resume.originalText,
+        enhancedText: null,
+        jobRole: resume.jobRole,
+        atsScore: null,
+        tags: ['text-import'],
+        metadata: { source: 'text-to-resume' }
+      });
+    } catch (err) {
+      await Resume.findByIdAndDelete(resume._id);
+      throw err;
+    }
 
     res.status(201).json({
       success: true,
@@ -585,27 +605,40 @@ router.post('/:resumeId/versions', verifyToken, validate(createResumeVersionSche
     throw new ApiError(404, 'Resume not found');
   }
 
-  // Find latest version number
-  const latestVersion = await ResumeVersion.findOne({ resumeId })
-    .sort({ versionNumber: -1 })
-    .select('versionNumber')
-    .lean();
+  let retries = 3;
+  let newVersion;
+  while (retries > 0) {
+    // Find latest version number
+    const latestVersion = await ResumeVersion.findOne({ resumeId })
+      .sort({ versionNumber: -1 })
+      .select('versionNumber')
+      .lean();
 
-  const nextVersionNum = latestVersion ? latestVersion.versionNumber + 1 : 1;
-  const defaultTitle = title || `Version ${nextVersionNum} - ${new Date().toLocaleDateString()}`;
+    const nextVersionNum = latestVersion ? latestVersion.versionNumber + 1 : 1;
+    const defaultTitle = title || `Version ${nextVersionNum} - ${new Date().toLocaleDateString()}`;
 
-  const newVersion = await ResumeVersion.create({
-    resumeId,
-    userId,
-    versionNumber: nextVersionNum,
-    title: defaultTitle,
-    originalText,
-    enhancedText: enhancedText || null,
-    jobRole: jobRole || null,
-    atsScore: atsScore || null,
-    tags: tags || [],
-    metadata: metadata || {}
-  });
+    try {
+      newVersion = await ResumeVersion.create({
+        resumeId,
+        userId,
+        versionNumber: nextVersionNum,
+        title: defaultTitle,
+        originalText,
+        enhancedText: enhancedText || null,
+        jobRole: jobRole || null,
+        atsScore: atsScore !== undefined && atsScore !== null ? atsScore : null,
+        tags: tags || [],
+        metadata: metadata || {}
+      });
+      break;
+    } catch (err) {
+      if (err.code === 11000 && retries > 1) {
+        retries--;
+        continue;
+      }
+      throw err;
+    }
+  }
 
   res.status(201).json({
     success: true,
@@ -668,6 +701,12 @@ router.put('/:resumeId/versions/:versionId', verifyToken, validate(updateResumeV
 router.delete('/:resumeId/versions/:versionId', verifyToken, asyncHandler(async (req, res) => {
   const { resumeId, versionId } = req.params;
   const userId = req.user.uid;
+
+  // Enforce a server-side minimum of one version before deletion
+  const totalVersions = await ResumeVersion.countDocuments({ resumeId });
+  if (totalVersions <= 1) {
+    throw new ApiError(400, 'Cannot delete the only remaining version of the resume');
+  }
 
   const deletedVersion = await ResumeVersion.findOneAndDelete({ _id: versionId, resumeId, userId });
   if (!deletedVersion) {

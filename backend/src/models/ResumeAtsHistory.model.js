@@ -25,7 +25,12 @@ const resumeAtsHistorySchema = new mongoose.Schema({
         formatting: { type: Number, default: 0 },
         experienceRelevance: { type: Number, default: 0 },
         skillsAlignment: { type: Number, default: 0 },
-        educationMatch: { type: Number, default: 0 }
+        educationMatch: { type: Number, default: 0 },
+        summary: { type: Number, default: 0 },
+        skills: { type: Number, default: 0 },
+        experience: { type: Number, default: 0 },
+        education: { type: Number, default: 0 },
+        projects: { type: Number, default: 0 }
     },
     missingKeywords: [{
         type: String,

@@ -71,7 +71,7 @@ export default function ResumeVersions({
         originalText: currentOriginalText,
         enhancedText: currentEnhancedText || null,
         jobRole: snapshotRole.trim() || null,
-        atsScore: currentAtsScore || null,
+        atsScore: currentAtsScore !== undefined && currentAtsScore !== null ? currentAtsScore : null,
         tags: tagsArray
       }
 
@@ -247,7 +247,7 @@ export default function ResumeVersions({
                             {version.jobRole}
                           </span>
                         )}
-                        {version.atsScore && (
+                        {(version.atsScore !== null && version.atsScore !== undefined) && (
                           <span className="inline-flex items-center gap-1 font-semibold text-emerald-400">
                             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                             ATS Score: {version.atsScore}

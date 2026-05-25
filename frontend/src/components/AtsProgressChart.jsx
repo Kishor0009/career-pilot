@@ -52,13 +52,12 @@ export default function AtsProgressChart({ resumeId }) {
   
   // Latest log data
   const latestLog = history[history.length - 1]
-  const breakdown = latestLog.scoreBreakdown || {
-    keywordMatch: 0,
-    formatting: 0,
-    experienceRelevance: 0,
-    skillsAlignment: 0,
-    educationMatch: 0
-  }
+  const breakdown = latestLog.scoreBreakdown || {}
+  const keywordScore = breakdown.keywordMatch ?? breakdown.projects ?? 0
+  const formattingScore = breakdown.formatting ?? breakdown.summary ?? 0
+  const experienceScore = breakdown.experienceRelevance ?? breakdown.experience ?? 0
+  const skillsScore = breakdown.skillsAlignment ?? breakdown.skills ?? 0
+  const educationScore = breakdown.educationMatch ?? breakdown.education ?? 0
 
   // Chart Dimensions
   const width = 600
@@ -286,11 +285,11 @@ export default function AtsProgressChart({ resumeId }) {
 
             <div className="space-y-3.5">
               {[
-                { name: 'Keyword Match', score: breakdown.keywordMatch || 0 },
-                { name: 'Formatting & Layout', score: breakdown.formatting || 0 },
-                { name: 'Experience Relevance', score: breakdown.experienceRelevance || 0 },
-                { name: 'Skills Alignment', score: breakdown.skillsAlignment || 0 },
-                { name: 'Education Alignment', score: breakdown.educationMatch || 0 },
+                { name: 'Keyword Match', score: keywordScore },
+                { name: 'Formatting & Layout', score: formattingScore },
+                { name: 'Experience Relevance', score: experienceScore },
+                { name: 'Skills Alignment', score: skillsScore },
+                { name: 'Education Alignment', score: educationScore },
               ].map((category, idx) => (
                 <div key={idx} className="space-y-1">
                   <div className="flex justify-between text-xs">
@@ -340,7 +339,7 @@ export default function AtsProgressChart({ resumeId }) {
               ) : totalDifference === 0 ? (
                 `Your score has remained stable at ${currentScore}. Try targeting more specific industry keywords or enhancing the experience bullet points using STAR format to boost the score.`
               ) : (
-                `Your score declined by ${totalDifference} points, likely due to changing job roles or removal of key skills. Re-add relevant keywords to recover your score.`
+                `Your score declined by ${Math.abs(totalDifference)} points, likely due to changing job roles or removal of key skills. Re-add relevant keywords to recover your score.`
               )}
             </p>
           </div>
@@ -351,19 +350,19 @@ export default function AtsProgressChart({ resumeId }) {
               Target Optimization Areas
             </div>
             <ul className="text-xs text-muted-foreground list-disc list-inside space-y-1.5">
-              {breakdown.keywordMatch < 80 && (
-                <li>Keyword Match is at {breakdown.keywordMatch}%. Tailor resume to include missing target terms.</li>
+              {keywordScore < 80 && (
+                <li>Keyword Match is at {keywordScore}%. Tailor resume to include missing target terms.</li>
               )}
-              {breakdown.experienceRelevance < 80 && (
-                <li>Experience score is {breakdown.experienceRelevance}%. Quantify achievements with metrics.</li>
+              {experienceScore < 80 && (
+                <li>Experience score is {experienceScore}%. Quantify achievements with metrics.</li>
               )}
-              {breakdown.skillsAlignment < 80 && (
-                <li>Skills alignment is {breakdown.skillsAlignment}%. Align core skills with job criteria.</li>
+              {skillsScore < 80 && (
+                <li>Skills alignment is {skillsScore}%. Align core skills with job criteria.</li>
               )}
               {latestLog.missingKeywords && latestLog.missingKeywords.length > 0 && (
                 <li>Missing Keywords: {latestLog.missingKeywords.slice(0, 4).join(', ')}</li>
               )}
-              {breakdown.keywordMatch >= 80 && breakdown.experienceRelevance >= 80 && breakdown.skillsAlignment >= 80 && (
+              {keywordScore >= 80 && experienceScore >= 80 && skillsScore >= 80 && (
                 <li>Your resume sections are highly optimized! Try adding custom sections or formatting tweaks.</li>
               )}
             </ul>

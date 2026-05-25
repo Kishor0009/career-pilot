@@ -143,11 +143,11 @@ export default function ResumeView() {
           jobRole: resume?.jobRole || 'Software Engineer',
           atsScore: result.data.overallScore,
           scoreBreakdown: {
-            keywordMatch: result.data.sections?.projects?.score || 0,
-            formatting: result.data.sections?.summary?.score || 0,
-            experienceRelevance: result.data.sections?.experience?.score || 0,
-            skillsAlignment: result.data.sections?.skills?.score || 0,
-            educationMatch: result.data.sections?.education?.score || 0
+            summary: result.data.sections?.summary?.score || 0,
+            skills: result.data.sections?.skills?.score || 0,
+            experience: result.data.sections?.experience?.score || 0,
+            education: result.data.sections?.education?.score || 0,
+            projects: result.data.sections?.projects?.score || 0
           },
           missingKeywords: [],
           improvementsCount: result.data.topSuggestions?.length || 0
