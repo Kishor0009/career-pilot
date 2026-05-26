@@ -5,6 +5,7 @@ import { useTheme } from "../hooks/useTheme";
 import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Sun, ChevronDown, Check, Eye, Star } from "lucide-react";
 import HolographicAbout from "../components/portfolio/templates/Holographic/About";
+import Hero from "../components/portfolio/templates/Holographic/Hero";
 import CulinaryAbout from "../components/portfolio/templates/Culinary_Restaurant/About";
 import TechStartupHero from "../components/portfolio/templates/Tech_Startup/Hero";
 import GeometricShapesAbout from "../components/portfolio/templates/Geometric_Shapes/About";
@@ -273,6 +274,7 @@ export default function TemplateGallery() {
   });
 
   return (
+     
     <div className="min-h-screen bg-background text-foreground p-8 pt-24 transition-colors duration-300">
       <Navbar />
       <div className="flex justify-between items-center mb-8">
@@ -360,7 +362,10 @@ export default function TemplateGallery() {
           <span className="rounded-full bg-cyan-500/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-cyan-400 border border-cyan-500/30">
             Preview
           </span>
-          <h2 className="text-lg font-semibold text-foreground/70">Holographic Theme — About Section</h2>
+          <h2 className="text-lg font-semibold text-foreground/70">Holographic Theme — Hero & About Sections</h2>
+        </div>
+        <div className="overflow-hidden rounded-2xl border border-border">
+           <Hero />
         </div>
         <div className="overflow-hidden rounded-2xl border border-border">
           <HolographicAbout />

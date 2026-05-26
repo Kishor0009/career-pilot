@@ -386,6 +386,7 @@ className="w-full pl-12 pr-10 py-4 bg-muted/50 border border-border rounded-xl t
             </AnimatePresence>
           </form>
 
+
             {/* Popular Searches */}
             {!hasSearched && (
               <div className="mt-6 pt-4 border-t border-border">
