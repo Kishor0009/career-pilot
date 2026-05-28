@@ -1,3 +1,10 @@
+# [1.55.0](https://github.com/anurag3407/career-pilot/compare/v1.54.1...v1.55.0) (2026-05-28)
+
+
+### Features
+
+* implement Repo Analyzer feature with history tracking and new UI components ([3066c35](https://github.com/anurag3407/career-pilot/commit/3066c358ef4a5999169c1dc20598e742d21f9e50))
+
 ## [1.54.1](https://github.com/anurag3407/career-pilot/compare/v1.54.0...v1.54.1) (2026-05-28)
 
 
