@@ -1,3 +1,15 @@
+# [1.70.0](https://github.com/anurag3407/career-pilot/compare/v1.69.0...v1.70.0) (2026-05-28)
+
+
+### Bug Fixes
+
+* **portfolio:** add fallback error handling for broken avatars ([6509401](https://github.com/anurag3407/career-pilot/commit/65094019b770e7f99c4a079fc9091e28337e656b))
+
+
+### Features
+
+* **portfolio:** implement Charcoal Sketch template ([948123e](https://github.com/anurag3407/career-pilot/commit/948123e6ee5f4f7a59cb0092be3cfe9a15edce6e))
+
 # [1.69.0](https://github.com/anurag3407/career-pilot/compare/v1.68.0...v1.69.0) (2026-05-28)
 
 
