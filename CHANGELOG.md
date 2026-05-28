@@ -1,3 +1,24 @@
+# [1.56.0](https://github.com/anurag3407/career-pilot/compare/v1.55.0...v1.56.0) (2026-05-28)
+
+
+### Bug Fixes
+
+* remove tile reveal animations and resolve vite pre-transform error ([2466710](https://github.com/anurag3407/career-pilot/commit/24667107fd5e6195fc6d3179cad4c0674c1d8a62))
+* **volcanic-forge:** polish template accessibility and motion ([ec8fe39](https://github.com/anurag3407/career-pilot/commit/ec8fe39ec4f7fdbdfa88bf4b14778734b5abd4d9))
+
+
+### Features
+
+* implement Mosaic Assemble portfolio template matching dashboard theme ([9fdc46c](https://github.com/anurag3407/career-pilot/commit/9fdc46c623201f9f28cde128aab291d7a4f60256))
+* implement Mosaic Assemble portfolio template matching theme ([b018591](https://github.com/anurag3407/career-pilot/commit/b01859100500387fdbc2c75815ad1436bd22c1d7))
+* polish mosaic assemble theme and stability ([497f201](https://github.com/anurag3407/career-pilot/commit/497f201a3f4a3f800ec04e5fa7b51423de35a44f))
+* **portfolio:** introduce new Volcanic Forge theme template ([f8b72a6](https://github.com/anurag3407/career-pilot/commit/f8b72a6b2792c35f2f75b6dfe9c7bb30fb303c2e))
+
+
+### Reverts
+
+* remove non-mosaic branch changes ([fe3cba8](https://github.com/anurag3407/career-pilot/commit/fe3cba8c098c5f6fd28022a07f98e81d843e1601))
+
 # [1.55.0](https://github.com/anurag3407/career-pilot/compare/v1.54.1...v1.55.0) (2026-05-28)
 
 
