@@ -1,3 +1,10 @@
+## [1.82.1](https://github.com/anurag3407/career-pilot/compare/v1.82.0...v1.82.1) (2026-05-29)
+
+
+### Performance Improvements
+
+* **frontend:** optimize bundle splitting, lazy loading, and LCP ([e2c8346](https://github.com/anurag3407/career-pilot/commit/e2c8346a9ed39cfdfc21730560bde8e4c5358b29))
+
 # [1.82.0](https://github.com/anurag3407/career-pilot/compare/v1.81.1...v1.82.0) (2026-05-29)
 
 
